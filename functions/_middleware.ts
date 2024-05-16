@@ -26,7 +26,14 @@ import { Environment, HTTPError } from "..";
 
 export const onRequest: PagesFunction<Environment> = async ({ next }) => {
   try {
-    return await next();
+    const response = await next();
+
+    // Adding CORS headers to the response
+    response.headers.set("Access-Control-Allow-Origin", "*");
+    response.headers.set("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
+    response.headers.set("Access-Control-Allow-Headers", "Content-Type, Authorization");
+
+    return response;
   } catch (e) {
     if (!(e instanceof HTTPError)) {
       throw e;
@@ -36,6 +43,9 @@ export const onRequest: PagesFunction<Environment> = async ({ next }) => {
     const headers = {
       "Cache-Control": "no-cache",
       "Content-Type": "application/json; charset=UTF-8",
+      "Access-Control-Allow-Origin": "*", // Add CORS header in error response
+      "Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, OPTIONS", // Add allowed methods
+      "Access-Control-Allow-Headers": "Content-Type, Authorization" // Add allowed headers
     };
 
     const data = JSON.stringify(json);
