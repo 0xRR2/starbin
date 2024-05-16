@@ -34,6 +34,10 @@ export const onRequest: PagesFunction<Environment> = async ({ next }) => {
 
     const json = { message: e.message };
     const headers = {
+      "Access-Control-Allow-Origin": "*",
+      "Access-Control-Allow-Methods": "GET,HEAD,POST,OPTIONS",
+      "Access-Control-Max-Age": "86400",
+      
       "Cache-Control": "no-cache",
       "Content-Type": "application/json; charset=UTF-8",
     };
